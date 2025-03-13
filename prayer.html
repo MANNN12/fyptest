@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iPray - Prayer Times</title>
+    <link rel="stylesheet" href="css/Homepage.css">
+    <link rel="stylesheet" href="css/Features.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .prayer-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .prayer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .prayer-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .prayer-card.active {
+            border: 2px solid #4CAF50;
+            animation: glow 2s infinite;
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 10px rgba(76, 175, 80, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(76, 175, 80, 0.8); }
+            100% { box-shadow: 0 0 10px rgba(76, 175, 80, 0.5); }
+        }
+
+        .prayer-name {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        .prayer-time {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #4CAF50;
+            margin-bottom: 1rem;
+        }
+
+        .countdown {
+            font-size: 1.2rem;
+            color: #aaa;
+            margin-bottom: 1rem;
+        }
+
+        .prayer-info {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .info-item {
+            text-align: center;
+        }
+
+        .info-label {
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-bottom: 0.3rem;
+        }
+
+        .info-value {
+            font-size: 1.1rem;
+            color: #fff;
+        }
+
+        .qibla-section {
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        .compass {
+            width: 200px;
+            height: 200px;
+            margin: 2rem auto;
+            position: relative;
+            transition: transform 0.5s ease;
+        }
+
+        .compass img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .compass-arrow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 4px;
+            height: 100px;
+            background: #4CAF50;
+            transform-origin: bottom center;
+            transform: translate(-50%, -100%);
+            transition: transform 0.5s ease;
+        }
+
+        .location-info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .location-info i {
+            font-size: 1.5rem;
+            color: #4CAF50;
+        }
+
+        .settings-button {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #4CAF50;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .settings-button:hover {
+            transform: scale(1.1);
+            background: #45a049;
+        }
+
+        .notification {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: #4CAF50;
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transform: translateX(120%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .method-selector {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .method-selector select {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .method-selector select option {
+            background: #333;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo"><img src="Image/Logo3.png" alt="iPray Logo"></div>
+            <nav><ul>
+                <li><a href="HomePage2.html">Home</a></li>
+                <li><a href="Features.html">Features</a></li>
+                <li><a href="ramadhan.html">Ramadhan</a></li>
+                <li><a href="shop/index.php">Shop</a></li>
+                <li><a href="#">About Us</a></li>
+            </ul></nav>
+            <div class="cart"><a href="#"><i class="fa-solid fa-mosque"></i></a></div>
+        </div>
+    </header>
+
+    <div class="category-bar">
+        <a href="Features.html">QURAN</a>
+        <a href="prayer.html" class="active">PRAYER TIME</a>
+        <a href="zakat.html">ZAKAT CALCULATOR</a>
+        <a href="quotes.html">QUOTES</a>
+        <a href="dua.html">DU'A</a>
+    </div>
+
+    <div class="prayer-container">
+        <div class="location-info">
+            <i class='bx bxs-map'></i>
+            <span id="location">Loading location...</span>
+        </div>
+
+        <div class="method-selector">
+            <select id="calculationMethod">
+                <option value="mwl">Muslim World League</option>
+                <option value="isna">Islamic Society of North America</option>
+                <option value="egypt">Egyptian General Authority</option>
+                <option value="makkah">Umm al-Qura University, Makkah</option>
+                <option value="karachi">University of Islamic Sciences, Karachi</option>
+            </select>
+        </div>
+
+        <div class="prayer-grid">
+            <div class="prayer-card" id="fajr">
+                <h3 class="prayer-name">Fajr</h3>
+                <div class="prayer-time">05:30</div>
+                <div class="countdown">2 hours remaining</div>
+                <div class="prayer-info">
+                    <div class="info-item">
+                        <div class="info-label">Iqamah</div>
+                        <div class="info-value">05:45</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Sunrise</div>
+                        <div class="info-value">06:45</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="prayer-card active" id="dhuhr">
+                <h3 class="prayer-name">Dhuhr</h3>
+                <div class="prayer-time">13:15</div>
+                <div class="countdown">Current prayer</div>
+                <div class="prayer-info">
+                    <div class="info-item">
+                        <div class="info-label">Iqamah</div>
+                        <div class="info-value">13:30</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Duration</div>
+                        <div class="info-value">4h 15m</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="prayer-card" id="asr">
+                <h3 class="prayer-name">Asr</h3>
+                <div class="prayer-time">16:45</div>
+                <div class="countdown">3 hours 30 minutes</div>
+                <div class="prayer-info">
+                    <div class="info-item">
+                        <div class="info-label">Iqamah</div>
+                        <div class="info-value">17:00</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Duration</div>
+                        <div class="info-value">3h 15m</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="prayer-card" id="maghrib">
+                <h3 class="prayer-name">Maghrib</h3>
+                <div class="prayer-time">20:00</div>
+                <div class="countdown">6 hours 45 minutes</div>
+                <div class="prayer-info">
+                    <div class="info-item">
+                        <div class="info-label">Iqamah</div>
+                        <div class="info-value">20:15</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Sunset</div>
+                        <div class="info-value">19:55</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="prayer-card" id="isha">
+                <h3 class="prayer-name">Isha</h3>
+                <div class="prayer-time">21:30</div>
+                <div class="countdown">8 hours 15 minutes</div>
+                <div class="prayer-info">
+                    <div class="info-item">
+                        <div class="info-label">Iqamah</div>
+                        <div class="info-value">21:45</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Midnight</div>
+                        <div class="info-value">00:15</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="qibla-section">
+            <h2>Qibla Direction</h2>
+            <div class="compass">
+                <img src="assets/compass.png" alt="Compass">
+                <div class="compass-arrow"></div>
+            </div>
+        </div>
+    </div>
+
+    <button class="settings-button" id="settingsBtn">
+        <i class='bx bxs-cog'></i>
+    </button>
+
+    <div class="notification" id="notification">
+        <i class='bx bxs-bell'></i>
+        <span>Prayer time notification</span>
+    </div>
+
+    <script>
+        // Get user's location
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(position => {
+                const { latitude, longitude } = position.coords;
+                fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('location').textContent = `${data.address.city}, ${data.address.country}`;
+                    });
+            });
+        }
+
+        // Update compass direction based on device orientation
+        if ("DeviceOrientationEvent" in window) {
+            window.addEventListener("deviceorientation", event => {
+                const compass = document.querySelector('.compass img');
+                compass.style.transform = `rotate(${event.alpha}deg)`;
+            });
+        }
+
+        // Prayer times countdown
+        function updateCountdown() {
+            const now = new Date();
+            const cards = document.querySelectorAll('.prayer-card');
+            
+            cards.forEach(card => {
+                const timeStr = card.querySelector('.prayer-time').textContent;
+                const [hours, minutes] = timeStr.split(':').map(Number);
+                const prayerTime = new Date();
+                prayerTime.setHours(hours, minutes, 0);
+
+                const diff = prayerTime - now;
+                const diffHours = Math.floor(diff / (1000 * 60 * 60));
+                const diffMinutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+                if (diff > 0) {
+                    card.querySelector('.countdown').textContent = 
+                        `${diffHours}h ${diffMinutes}m remaining`;
+                } else if (diff > -900000) { // Within 15 minutes after prayer time
+                    card.classList.add('active');
+                    card.querySelector('.countdown').textContent = 'Current prayer';
+                } else {
+                    card.classList.remove('active');
+                    card.querySelector('.countdown').textContent = 'Completed';
+                }
+            });
+        }
+
+        setInterval(updateCountdown, 60000);
+        updateCountdown();
+
+        // Settings button click handler
+        document.getElementById('settingsBtn').addEventListener('click', () => {
+            const notification = document.getElementById('notification');
+            notification.classList.add('show');
+            setTimeout(() => notification.classList.remove('show'), 3000);
+        });
+
+        // Calculation method change handler
+        document.getElementById('calculationMethod').addEventListener('change', function() {
+            // Here you would typically fetch new prayer times based on the selected method
+            console.log('Calculation method changed to:', this.value);
+        });
+
+        // Add hover sound effect
+        const cards = document.querySelectorAll('.prayer-card');
+        const hoverSound = new Audio('assets/hover.mp3');
+
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                hoverSound.currentTime = 0;
+                hoverSound.play();
+            });
+        });
+    </script>
+</body>
+</html>

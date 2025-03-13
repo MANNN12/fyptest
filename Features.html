@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iPray - Features</title>
+    <link rel="stylesheet" href="css/Features.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+
+        :root {
+            --bg-color: #f4f4f4;
+            --text-color: #333;
+            --card-bg: #fff;
+            --card-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            --category-bg: whitesmoke;
+            --category-border: #444;
+            --category-text: #333;
+            --search-border: #ddd;
+        }
+
+        [data-theme='dark'] {
+            --bg-color: #1a1a1a;
+            --text-color: #fff;
+            --card-bg: #2d2d2d;
+            --card-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            --category-bg: #2d2d2d;
+            --category-border: #555;
+            --category-text: #fff;
+            --search-border: #555;
+        }
+
+        /* Header Styles */
+        .header-container {
+            background-color: #000;
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+            width: auto;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: #d3d3d3;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover, nav a.active {
+            color: #e63946;
+        }
+
+        /* Category Bar */
+        .category-bar {
+            background-color: var(--category-bg);
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 2px solid #444;
+        }
+
+        .category-bar a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: bold;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .category-bar a:hover {
+            background-color: #444;
+            color: white;
+        }
+
+        .category-bar a.active {
+            background-color: #e63946;
+            color: white;
+        }
+
+        /* Juz Grid */
+        .juz-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .juz-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            padding: 1rem;
+        }
+
+        .juz-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .juz-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .juz-content {
+            padding: 1.5rem;
+        }
+
+        .juz-number {
+            font-size: 1.5rem;
+            color: #e63946;
+            margin-bottom: 0.5rem;
+        }
+
+        .juz-details {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .juz-button {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: #e63946;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .juz-button:hover {
+            background-color: #c1121f;
+        }
+
+        @media (max-width: 768px) {
+            .nav-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .category-bar {
+                padding: 0.5rem;
+            }
+
+            .category-bar a {
+                margin: 0.25rem;
+                display: inline-block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo"><img src="Image/Logo3.png" alt="iPray Logo"></div>
+            <nav><ul>
+                <li><a href="HomePage2.html">Home</a></li>
+                <li><a href="Features.html" class="active">Features</a></li>
+                <li><a href="ramadhan.html">Ramadhan</a></li>
+                <li><a href="shop/index.php">Shop</a></li>
+                <li><a href="#">About Us</a></li>
+            </ul></nav>
+            <div class="cart">
+                <button id="themeToggle" onclick="toggleTheme()" style="background: none; border: none; color: #fff; cursor: pointer; margin-right: 15px;">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <a href="#"><i class="fa-solid fa-mosque"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <div class="category-bar">
+        <a href="Features.html" class="active">QURAN</a>
+        <a href="prayer.html">PRAYER TIME</a>
+        <a href="zakat.html">ZAKAT CALCULATOR</a>
+        <a href="quotes.html">QUOTES</a>
+        <a href="dua.html">DU'A</a>
+    </div>
+
+    <input type="text" id="searchJuz" placeholder="Search Juz..." style="display: block; width: 90%; max-width: 1200px; margin: 1rem auto; padding: 10px; border: 1px solid var(--search-border); border-radius: 5px; background: var(--card-bg); color: var(--text-color);">
+
+    <main class="juz-container">
+        <div class="juz-grid">
+            <!-- Juz 1 -->
+            <div class="juz-card">
+                <div class="juz-content">
+                    <h2 class="juz-number">Juz 1</h2>
+                    <p class="juz-details">Al-Fatihah 1 - Al-Baqarah 141</p>
+                    <a href="juz1.html" class="juz-button">Read Now</a>
+                </div>
+            </div>
+
+            <!-- Juz 2 -->
+            <div class="juz-card">
+                <div class="juz-content">
+                    <h2 class="juz-number">Juz 2</h2>
+                    <p class="juz-details">Al-Baqarah 142 - Al-Baqarah 252</p>
+                    <a href="juz2.html" class="juz-button">Read Now</a>
+                </div>
+            </div>
+
+            <!-- Juz 3 -->
+            <div class="juz-card">
+                <div class="juz-content">
+                    <h2 class="juz-number">Juz 3</h2>
+                    <p class="juz-details">Al-Baqarah 253 - Al-Imran 92</p>
+                    <a href="juz3.html" class="juz-button">Read Now</a>
+                </div>
+            </div>
+
+            <!-- Juz 4 -->
+            <div class="juz-card">
+                <div class="juz-content">
+                    <h2 class="juz-number">Juz 4</h2>
+                    <p class="juz-details">Al-Imran 93 - Al-Nisa 23</p>
+                    <a href="juz4.html" class="juz-button">Read Now</a>
+                </div>
+            </div>
+
+            <!-- Juz 5 -->
+            <div class="juz-card">
+                <div class="juz-content">
+                    <h2 class="juz-number">Juz 5</h2>
+                    <p class="juz-details">Al-Nisa 24 - Al-Nisa 147</p>
+                    <a href="juz5.html" class="juz-button">Read Now</a>
+                </div>
+            </div>
+
+            <!-- Juz 6 -->
+            <div class="juz-card">
+                <div class="juz-content">
+                    <h2 class="juz-number">Juz 6</h2>
+                    <p class="juz-details">Al-Nisa 148 - Al-Ma'idah 81</p>
+                    <a href="juz6.html" class="juz-button">Read Now</a>
+                </div>
+            </div>
+
+            <!-- Add more Juz cards here -->
+            <!-- Juz 7-30 -->
+            <div class="juz-card">
+                <div class="juz-content">
+                    <h2 class="juz-number">Juz 7</h2>
+                    <p class="juz-details">Al-Ma'idah 82 - Al-An'am 110</p>
+                    <a href="juz7.html" class="juz-button">Read Now</a>
+                </div>
+            </div>
+
+            <div class="juz-card">
+                <div class="juz-content">
+                    <h2 class="juz-number">Juz 8</h2>
+                    <p class="juz-details">Al-An'am 111 - Al-A'raf 87</p>
+                    <a href="juz8.html" class="juz-button">Read Now</a>
+                </div>
+            </div>
+
+            <div class="juz-card">
+                <div class="juz-content">
+                    <h2 class="juz-number">Juz 9</h2>
+                    <p class="juz-details">Al-A'raf 88 - Al-Anfal 40</p>
+                    <a href="juz9.html" class="juz-button">Read Now</a>
+                </div>
+            </div>
+
+            <div class="juz-card">
+                <div class="juz-content">
+                    <h2 class="juz-number">Juz 10</h2>
+                    <p class="juz-details">Al-Anfal 41 - At-Tawbah 92</p>
+                    <a href="juz10.html" class="juz-button">Read Now</a>
+                </div>
+            </div>
+
+            <div class="juz-card">
+                <div class="juz-content">
+                    <h2 class="juz-number">Juz 11</h2>
+                    <p class="juz-details">At-Tawbah 93 - Hud 5</p>
+                    <a href="juz11.html" class="juz-button">Read Now</a>
+                </div>
+            </div>
+
+            <div class="juz-card">
+                <div class="juz-content">
+                    <h2 class="juz-number">Juz 12</h2>
+                    <p class="juz-details">Hud 6 - Yusuf 52</p>
+                    <a href="juz12.html" class="juz-button">Read Now</a>
+                </div>
+            </div>
+
+            <div class="juz-card">
+                <div class="juz-content">
+                    <h2 class="juz-number">Juz 13</h2>
+                    <p class="juz-details">Yusuf 53 - Ibrahim 52</p>
+                    <a href="juz13.html" class="juz-button">Read Now</a>
+                </div>
+            </div>
+
+            <div class="juz-card">
+                <div class="juz-content">
+                    <h2 class="juz-number">Juz 14</h2>
+                    <p class="juz-details">Al-Hijr 1 - An-Nahl 128</p>
+                    <a href="juz14.html" class="juz-button">Read Now</a>
+                </div>
+            </div>
+
+            <div class="juz-card">
+                <div class="juz-content">
+                    <h2 class="juz-number">Juz 15</h2>
+                    <p class="juz-details">Al-Isra 1 - Al-Kahf 74</p>
+                    <a href="juz15.html" class="juz-button">Read Now</a>
+                </div>
+            </div>
+
+            <div class="juz-card">
+                <div class="juz-content">
+                    <h2 class="juz-number">Juz 16</h2>
+                    <p class="juz-details">Al-Kahf 75 - Ta-Ha 135</p>
+                    <a href="juz16.html" class="juz-button">Read Now</a>
+                </div>
+            </div>
+
+            <div class="juz-card">
+                <div class="juz-content">
+                    <h2 class="juz-number">Juz 17</h2>
+                    <p class="juz-details">Al-Anbiya 1 - Al-Hajj 78</p>
+                    <a href="juz17.html" class="juz-button">Read Now</a>
+                </div>
+            </div>
+
+            <div class="juz-card">
+                <div class="juz-content">
+                    <h2 class="juz-number">Juz 18</h2>
+                    <p class="juz-details">Al-Mu'minun 1 - Al-Furqan 20</p>
+                    <a href="juz18.html" class="juz-button">Read Now</a>
+                </div>
+            </div>
+
+            <div class="juz-card">
+                <div class="juz-content">
+                    <h2 class="juz-number">Juz 19</h2>
+                    <p class="juz-details">Al-Furqan 21 - An-Naml 55</p>
+                    <a href="juz19.html" class="juz-button">Read Now</a>
+                </div>
+            </div>
+
+            <div class="juz-card">
+                <div class="juz-content">
+                    <h2 class="juz-number">Juz 20</h2>
+                    <p class="juz-details">An-Naml 56 - Al-Ankabut 45</p>
+                    <a href="juz20.html" class="juz-button">Read Now</a>
+                </div>
+            </div>
+
+            <div class="juz-card">
+                <div class="juz-content">
+                    <h2 class="juz-number">Juz 21</h2>
+                    <p class="juz-details">Al-Ankabut 46 - Al-Ahzab 30</p>
+                    <a href="juz21.html" class="juz-button">Read Now</a>
+                </div>
+            </div>
+
+            <div class="juz-card">
+                <div class="juz-content">
+                    <h2 class="juz-number">Juz 22</h2>
+                    <p class="juz-details">Al-Ahzab 31 - Ya-Sin 27</p>
+                    <a href="juz22.html" class="juz-button">Read Now</a>
+                </div>
+            </div>
+
+            <div class="juz-card">
+                <div class="juz-content">
+                    <h2 class="juz-number">Juz 23</h2>
+                    <p class="juz-details">Ya-Sin 28 - Az-Zumar 31</p>
+                    <a href="juz23.html" class="juz-button">Read Now</a>
+                </div>
+            </div>
+
+            <div class="juz-card">
+                <div class="juz-content">
+                    <h2 class="juz-number">Juz 24</h2>
+                    <p class="juz-details">Az-Zumar 32 - Fussilat 46</p>
+                    <a href="juz24.html" class="juz-button">Read Now</a>
+                </div>
+            </div>
+
+            <div class="juz-card">
+                <div class="juz-content">
+                    <h2 class="juz-number">Juz 25</h2>
+                    <p class="juz-details">Fussilat 47 - Al-Jathiya 37</p>
+                    <a href="juz25.html" class="juz-button">Read Now</a>
+                </div>
+            </div>
+
+            <div class="juz-card">
+                <div class="juz-content">
+                    <h2 class="juz-number">Juz 26</h2>
+                    <p class="juz-details">Al-Ahqaf 1 - Az-Zariyat 30</p>
+                    <a href="juz26.html" class="juz-button">Read Now</a>
+                </div>
+            </div>
+
+            <div class="juz-card">
+                <div class="juz-content">
+                    <h2 class="juz-number">Juz 27</h2>
+                    <p class="juz-details">Az-Zariyat 31 - Al-Hadid 29</p>
+                    <a href="juz27.html" class="juz-button">Read Now</a>
+                </div>
+            </div>
+
+            <div class="juz-card">
+                <div class="juz-content">
+                    <h2 class="juz-number">Juz 28</h2>
+                    <p class="juz-details">Al-Mujadila 1 - At-Tahrim 12</p>
+                    <a href="juz28.html" class="juz-button">Read Now</a>
+                </div>
+            </div>
+
+            <div class="juz-card">
+                <div class="juz-content">
+                    <h2 class="juz-number">Juz 29</h2>
+                    <p class="juz-details">Al-Mulk 1 - Al-Mursalat 50</p>
+                    <a href="juz29.html" class="juz-button">Read Now</a>
+                </div>
+            </div>
+
+            <div class="juz-card">
+                <div class="juz-content">
+                    <h2 class="juz-number">Juz 30</h2>
+                    <p class="juz-details">An-Naba 1 - An-Nas 6</p>
+                    <a href="juz30.html" class="juz-button">Read Now</a>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        // Theme toggle functionality
+        function toggleTheme() {
+            const html = document.documentElement;
+            const themeIcon = document.querySelector('#themeToggle i');
+            
+            if (html.getAttribute('data-theme') === 'dark') {
+                html.removeAttribute('data-theme');
+                themeIcon.className = 'fas fa-moon';
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                themeIcon.className = 'fas fa-sun';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            document.querySelector('#themeToggle i').className = 'fas fa-sun';
+        }
+    </script>
+</body>
+</html>

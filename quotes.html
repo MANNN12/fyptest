@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iPray - Daily Quotes</title>
+    <link rel="stylesheet" href="style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        .quotes-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .quote-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .quote-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .quote-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .quote-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .quote-text {
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            position: relative;
+            padding: 0 2rem;
+        }
+
+        .quote-text::before,
+        .quote-text::after {
+            content: '"';
+            font-size: 4rem;
+            color: #4CAF50;
+            position: absolute;
+            opacity: 0.3;
+        }
+
+        .quote-text::before {
+            top: -1rem;
+            left: -1rem;
+        }
+
+        .quote-text::after {
+            bottom: -2rem;
+            right: -1rem;
+        }
+
+        .quote-author {
+            font-size: 1.1rem;
+            color: #4CAF50;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .quote-source {
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-bottom: 1.5rem;
+        }
+
+        .quote-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .action-btn {
+            background: transparent;
+            border: 1px solid #4CAF50;
+            color: #4CAF50;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .action-btn:hover {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .action-btn i {
+            font-size: 1.2rem;
+        }
+
+        .share-count {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .categories {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            overflow-x: auto;
+            padding-bottom: 1rem;
+        }
+
+        .category-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .category-btn.active {
+            background: #4CAF50;
+        }
+
+        .category-btn:hover {
+            background: #4CAF50;
+        }
+
+        .search-bar {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            padding: 0.5rem 1rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .search-bar input {
+            background: transparent;
+            border: none;
+            color: white;
+            width: 100%;
+            padding: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .search-bar input::placeholder {
+            color: #aaa;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+        }
+
+        .search-bar i {
+            color: #4CAF50;
+            font-size: 1.2rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .quote-card {
+            animation: fadeIn 0.5s ease;
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #4CAF50;
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transform: translateX(120%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-container">
+        <div class="logo">
+            <img src="Image/Logo3.png" width="500" height="500" alt="Logo"/>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="HomePage2.html">Home</a></li>
+                <li><a href="Features.html">Features</a></li>
+                <li><a href="ramadhan.html">Ramadhan</a></li>
+                <li><a href="shop/index.php">Shop</a></li>
+                <li><a href="#">About Us</a></li>
+            </ul>
+        </nav>
+        <div class="cart">
+            <a href="#"><i class="fa-solid fa-mosque"></i></a>
+        </div>
+    </div>
+
+    <div class="category-bar">
+        <a href="Features.html">QURAN&nbsp;</a>
+        <a href="prayer.html">PRAYER TIME&nbsp;</a>
+        <a href="zakat.html">ZAKAT CALCULATOR&nbsp;</a>
+        <a href="quotes.html" class="active">QUOTES&nbsp;</a>
+        <a href="dua.html">DU'A&nbsp;</a>
+    </div>
+
+    <div class="quotes-container">
+        <div class="search-bar">
+            <i class='bx bx-search'></i>
+            <input type="text" placeholder="Search quotes...">
+        </div>
+
+        <div class="categories">
+            <button class="category-btn active">All</button>
+            <button class="category-btn">Motivation</button>
+            <button class="category-btn">Prayer</button>
+            <button class="category-btn">Patience</button>
+            <button class="category-btn">Gratitude</button>
+            <button class="category-btn">Faith</button>
+            <button class="category-btn">Kindness</button>
+            <button class="category-btn">Success</button>
+        </div>
+
+        <div class="quote-card">
+            <div class="quote-text">
+                "Indeed, with hardship comes ease. Indeed, with hardship comes ease."
+            </div>
+            <div class="quote-author">Surah Ash-Sharh</div>
+            <div class="quote-source">Quran 94:5-6</div>
+            <div class="quote-actions">
+                <div class="action-buttons">
+                    <button class="action-btn" onclick="copyQuote(this)">
+                        <i class='bx bx-copy'></i> Copy
+                    </button>
+                    <button class="action-btn" onclick="shareQuote(this)">
+                        <i class='bx bx-share-alt'></i> Share
+                    </button>
+                    <button class="action-btn" onclick="saveQuote(this)">
+                        <i class='bx bx-bookmark'></i> Save
+                    </button>
+                </div>
+                <div class="share-count">
+                    <i class='bx bx-heart'></i> 1.2K shares
+                </div>
+            </div>
+        </div>
+
+        <div class="quote-card">
+            <div class="quote-text">
+                "The best among you are those who have the best manners and character."
+            </div>
+            <div class="quote-author">Prophet Muhammad ﷺ</div>
+            <div class="quote-source">Sahih al-Bukhari</div>
+            <div class="quote-actions">
+                <div class="action-buttons">
+                    <button class="action-btn" onclick="copyQuote(this)">
+                        <i class='bx bx-copy'></i> Copy
+                    </button>
+                    <button class="action-btn" onclick="shareQuote(this)">
+                        <i class='bx bx-share-alt'></i> Share
+                    </button>
+                    <button class="action-btn" onclick="saveQuote(this)">
+                        <i class='bx bx-bookmark'></i> Save
+                    </button>
+                </div>
+                <div class="share-count">
+                    <i class='bx bx-heart'></i> 985 shares
+                </div>
+            </div>
+        </div>
+
+        <div class="quote-card">
+            <div class="quote-text">
+                "Be like a flower that gives its fragrance even to the hand that crushes it."
+            </div>
+            <div class="quote-author">Ali ibn Abi Talib</div>
+            <div class="quote-source">Classical Islamic Literature</div>
+            <div class="quote-actions">
+                <div class="action-buttons">
+                    <button class="action-btn" onclick="copyQuote(this)">
+                        <i class='bx bx-copy'></i> Copy
+                    </button>
+                    <button class="action-btn" onclick="shareQuote(this)">
+                        <i class='bx bx-share-alt'></i> Share
+                    </button>
+                    <button class="action-btn" onclick="saveQuote(this)">
+                        <i class='bx bx-bookmark'></i> Save
+                    </button>
+                </div>
+                <div class="share-count">
+                    <i class='bx bx-heart'></i> 756 shares
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification" id="notification">
+        <i class='bx bx-check-circle'></i>
+        <span id="notificationText"></span>
+    </div>
+
+    <script>
+        // Category selection
+        const categoryBtns = document.querySelectorAll('.category-btn');
+        categoryBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                categoryBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+
+        // Copy quote function
+        function copyQuote(button) {
+            const quoteCard = button.closest('.quote-card');
+            const quoteText = quoteCard.querySelector('.quote-text').textContent;
+            const author = quoteCard.querySelector('.quote-author').textContent;
+            
+            navigator.clipboard.writeText(`${quoteText}\n- ${author}`);
+            showNotification('Quote copied to clipboard!');
+        }
+
+        // Share quote function
+        function shareQuote(button) {
+            const quoteCard = button.closest('.quote-card');
+            const quoteText = quoteCard.querySelector('.quote-text').textContent;
+            const author = quoteCard.querySelector('.quote-author').textContent;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Islamic Quote',
+                    text: `${quoteText}\n- ${author}`,
+                    url: window.location.href
+                });
+            } else {
+                showNotification('Sharing is not supported on this device');
+            }
+        }
+
+        // Save quote function
+        function saveQuote(button) {
+            const icon = button.querySelector('i');
+            if (icon.classList.contains('bx-bookmark')) {
+                icon.classList.remove('bx-bookmark');
+                icon.classList.add('bxs-bookmark');
+                showNotification('Quote saved to favorites!');
+            } else {
+                icon.classList.remove('bxs-bookmark');
+                icon.classList.add('bx-bookmark');
+                showNotification('Quote removed from favorites');
+            }
+        }
+
+        // Show notification
+        function showNotification(text) {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notificationText');
+            notificationText.textContent = text;
+            notification.classList.add('show');
+            setTimeout(() => notification.classList.remove('show'), 3000);
+        }
+
+        // Search functionality
+        const searchInput = document.querySelector('.search-bar input');
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const quoteCards = document.querySelectorAll('.quote-card');
+            
+            quoteCards.forEach(card => {
+                const text = card.querySelector('.quote-text').textContent.toLowerCase();
+                const author = card.querySelector('.quote-author').textContent.toLowerCase();
+                
+                if (text.includes(searchTerm) || author.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Add hover sound effect
+        const buttons = document.querySelectorAll('.action-btn, .category-btn');
+        const hoverSound = new Audio('assets/hover.mp3');
+
+        buttons.forEach(button => {
+            button.addEventListener('mouseenter', () => {
+                hoverSound.currentTime = 0;
+                hoverSound.play();
+            });
+        });
+    </script>
+</body>
+</html>

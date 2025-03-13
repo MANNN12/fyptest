@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iPray</title>
+    <link rel="stylesheet" href="css/Features.css">
+    <script src="ramadhan.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+		.active {
+            font-weight: bold;
+            color: #e63946; 
+        }
+        .container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+    text-align: center;
+}
+
+h1 {
+    color: #d9534f;
+    margin: 20px 0;
+}
+
+.card {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    margin: 15px;
+}
+
+.recipe-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+button {
+    background: #d9534f;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background: #c9302c;
+}
+
+.video-section {
+    padding: 2rem;
+    margin: 2rem auto;
+    max-width: 800px;
+}
+.video-slider {
+    position: relative;
+    overflow: hidden;
+}
+.video-container {
+    display: flex;
+    transition: transform 0.3s ease;
+}
+.video-item {
+    min-width: 100%;
+    padding: 1rem;
+    position: relative;
+}
+
+.video-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40%;
+    height: 25px;
+    background: #2c3e50;
+    border-radius: 15px 15px 0 0;
+    z-index: 2;
+}
+
+.video-wrapper {
+    position: relative;
+    background: #2c3e50;
+    border-radius: 30px;
+    padding: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.video-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    z-index: 3;
+}
+
+.video-wrapper::after {
+    content: '';
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 40px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    z-index: 3;
+}
+.video-item video {
+    width: 100%;
+    max-height: 450px;
+    border-radius: 20px;
+    object-fit: cover;
+    display: block;
+}
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(230, 57, 70, 0.85);
+    color: white;
+    border: 2px solid white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(4px);
+}
+.prev-btn { left: -10px; }
+.next-btn { right: -10px; }
+
+.slider-btn:hover {
+    background: rgba(230, 57, 70, 1);
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.slider-btn:active {
+    transform: translateY(-50%) scale(0.95);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.video-slider:hover .slider-btn {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+}
+
+@media (max-width: 768px) {
+    .slider-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+    .prev-btn { left: 5px; }
+    .next-btn { right: 5px; }
+}
+.video-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 1rem;
+}
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ddd;
+    cursor: pointer;
+}
+.dot.active {
+    background: #e63946;
+}
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <div class="logo">
+            <img src="Image/Logo3.png" width="500" height="500" alt="Logo"/>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="HomePage2.html">Home</a></li>
+                <li><a href="Features.html">Features</a></li>
+                <li><a href="ramadhan.html" class="active">Ramadhan</a></li>
+                <li><a href="#">Shop</a></li>
+                <li><a href="#">About Us</a></li>
+            </ul>
+        </nav>
+		
+		
+        <div class="cart">
+            <a href="#"><i class="fa-solid fa-mosque"></i></a>
+        </div>
+    </div>
+</header>
+
+ <!-- Niat Puasa & Berbuka -->
+ <section class="niat-section">
+    <h2>Niat Puasa & Berbuka</h2>
+    <button onclick="showNiat('puasa')">Niat Puasa</button>
+    <button onclick="showNiat('berbuka')">Niat Berbuka</button>
+    <p id="niat-text"></p>
+</section>
+
+<!-- Video Section -->
+<section class="video-section">
+    <h2>30 Recipe Ramadhan</h2>
+    <div class="video-slider">
+        <button class="slider-btn prev-btn" onclick="prevVideo()">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <div class="video-container" id="videoSlider">
+            <div class="video-item">
+                <div class="video-wrapper">
+                    <video src="vid1.mp4" controls></video>
+                </div>
+            </div>
+            <div class="video-item">
+                <div class="video-wrapper">
+                    <video src="vid2.mp4" controls></video>
+                </div>
+            </div>
+            <div class="video-item">
+                <div class="video-wrapper">
+                    <video src="vid3.mp4" controls></video>
+                </div>
+            </div>
+        </div>
+        <button class="slider-btn next-btn" onclick="nextVideo()">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+        <div class="video-dots" id="videoDots"></div>
+    </div>
+</section>
+
+<script>
+    let currentVideo = 0;
+    const slider = document.getElementById('videoSlider');
+    const videos = document.querySelectorAll('.video-item');
+    const dotsContainer = document.getElementById('videoDots');
+
+    // Add keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        // Only handle keyboard navigation when the video slider is in viewport
+        const sliderRect = slider.getBoundingClientRect();
+        const isInViewport = (
+            sliderRect.top >= 0 &&
+            sliderRect.left >= 0 &&
+            sliderRect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            sliderRect.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
+
+        if (isInViewport) {
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault(); // Prevent page scrolling
+                prevVideo();
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault(); // Prevent page scrolling
+                nextVideo();
+            }
+        }
+    });
+
+    // Create dots
+    videos.forEach((_, index) => {
+        const dot = document.createElement('div');
+        dot.className = `dot ${index === 0 ? 'active' : ''}`;
+        dot.onclick = () => goToVideo(index);
+        dotsContainer.appendChild(dot);
+    });
+
+    function updateDots() {
+        document.querySelectorAll('.dot').forEach((dot, index) => {
+            dot.classList.toggle('active', index === currentVideo);
+        });
+    }
+
+    function goToVideo(index) {
+        currentVideo = index;
+        updateSlider();
+    }
+
+    function nextVideo() {
+        currentVideo = (currentVideo + 1) % videos.length;
+        updateSlider();
+    }
+
+    function prevVideo() {
+        currentVideo = (currentVideo - 1 + videos.length) % videos.length;
+        updateSlider();
+    }
+
+    function updateSlider() {
+        slider.style.transform = `translateX(-${currentVideo * 100}%)`;
+        updateDots();
+        // Pause all videos except current
+        videos.forEach((item, idx) => {
+            const video = item.querySelector('video');
+            if (idx !== currentVideo) video.pause();
+        });
+    }
+</script>
+
+</body>
+</html>

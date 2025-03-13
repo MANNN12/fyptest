@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iPray</title>
+    <link rel="stylesheet" href="css/Homepage2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Additional styles for the dropdown */
+        .dropdown-menu {
+            display: none; /* Initially hidden */
+            position: absolute;
+            background-color: #fff; /* Background color for the dropdown */
+            border: 1px solid #ccc; /* Optional border */
+            z-index: 1000; /* Ensures dropdown is above other elements */
+        }
+
+        .dropdown-menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .dropdown-menu li {
+            padding: 10px;
+        }
+
+        .dropdown-menu li a {
+            text-decoration: none;
+            color: black; /* Text color */
+            display: block; /* Make the link block level */
+        }
+
+        .dropdown-menu li a:hover {
+            background-color: #f0f0f0; /* Background color on hover */
+        }
+
+        /* Ensure the nav items are relatively positioned for dropdown */
+        nav {
+            position: relative;
+        }
+
+        /* Styling for search results */
+        .search-results {
+            margin-top: 20px;
+            display: none; /* Initially hidden */
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .search-results.active {
+            display: flex; /* Show results when active */
+        }
+
+        .product-item {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+		.receipt-icon-container a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+    margin-left: 20px; /* Tambah jarak antara ikon dan elemen lain */
+	margin-right: 20px;
+}
+
+.receipt-icon-container a:hover {
+    color: #f39c12; /* Ubah warna ikon apabila hover */
+}
+
+.receipt-icon-container a i {
+    font-size: 21px; /* Ukuran ikon */
+}
+		 .results-container {
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: left;
+            border-top: 2px solid #ccc;
+            padding-top: 10px;
+			 display: none;
+        }
+
+        .result-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+         /* Chatbot Styles */
+         .chatbot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            font-family: inherit;
+        }
+
+        .chatbot-icon {
+            width: 60px;
+            height: 60px;
+            background-color: #27ae60;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .chatbot-icon:hover {
+            background-color: #219653;
+            transform: scale(1.05);
+        }
+
+        .chatbot-icon i {
+            font-size: 24px;
+        }
+
+        .chatbot-box {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 350px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            display: none;
+            overflow: hidden;
+            flex-direction: column;
+            height: 450px;
+        }
+
+        .chatbot-header {
+            background-color: #27ae60;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chatbot-header h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .close-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 10px 12px;
+            border-radius: 15px;
+            margin-bottom: 5px;
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background-color: #f0f4f8;
+            border-bottom-right-radius: 5px;
+        }
+
+        .bot-message {
+            align-self: flex-start;
+            background-color: #e9f5eb;
+            border-bottom-left-radius: 5px;
+        }
+
+        .message-content {
+            word-wrap: break-word;
+        }
+
+        .chat-input-container {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        #chat-input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        #send-message {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-left: 10px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+
+        #send-message:hover {
+            background-color: #219653;
+        }
+
+        #send-message i {
+            font-size: 16px;
+        }
+
+        /* Animation for messages */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .feature-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #4CAF50;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .feature-description {
+            color: #ccc;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .feature-link {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: #4CAF50;
+            color: white;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+
+        .feature-link:hover {
+            background: #45a049;
+        }
+
+        .feature-card.highlight {
+            border: 2px solid #4CAF50;
+        }
+
+        .feature-stats {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .stat-item i {
+            margin-right: 0.5rem;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .new-feature {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #ff4757;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            animation: pulse 2s infinite;
+        }
+        .feature-card{
+    background: black; /* Warna hitam dengan opacity */
+}
+    </style>
+</head>
+<body>
+
+<!-- Header and Navigation -->
+<header>
+    <div class="header-container">
+        <div class="logo">
+            <img src="image/Logo3.png" width="200" height="200" alt="Logo"/>
+        </div>
+
+        <nav>
+            <ul>
+                <li><a href="HomePage2.html" class="active">Home</a></li>
+                <li><a href="Features.html">Features</a></li>
+                <li><a href="ramadhan.html">Ramadhan</a></li>
+                <li><a href="shop/index.php">Shop</a></li>
+                <li><a href="#">About Us</a></li>
+            </ul>
+        </nav>
+
+        <div class="receipt-icon-container">
+            <a href="Receipt.html">
+                <i class="fa-solid fa-user"></i>Profile
+            </a>
+        </div>
+    </div>
+</header>
+
+<!-- Hero Section with Video and Overlay -->
+<section class="hero">
+    <video autoplay muted loop playsinline>
+        <source src="video2.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="hero-overlay">
+        <h1>Welcome To iPray</h1>
+        <p>Your Muslim Friendly App Companion</p>
+    </div>
+</section>
+
+<!-- Featured Categories -->
+<section class="categories">
+    <h2 class="categories-title">EXPLORE & EMPOWER</h2> 
+    <div class="category">
+        <h2>Education</h2>
+        <img src="image/Educational.jpg" alt="Educational"/>
+    </div>
+    <div class="category">
+        <h2>Motivation</h2>
+        <img src="image/Motivation.jpg" alt="Motivation"/>
+    </div>
+    <div class="category">
+        <h2>Islamic</h2>
+        <img src="image/Quran.jpg" alt="Quran"/>
+    </div>
+</section>
+
+<!-- Chatbot Container -->
+<div class="chatbot-container">
+    <div class="chatbot-icon" id="chatbot-toggle">
+        <i class="fas fa-comment-dots"></i>
+    </div>
+    
+    <div class="chatbot-box" id="chatbot-box">
+        <div class="chatbot-header">
+            <h3>iPray Assistant</h3>
+            <button class="close-btn" id="close-chatbot">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="chat-messages" id="chat-messages">
+            <div class="message bot-message">
+                <div class="message-content">Assalamu alaikum! How can I help you with your spiritual journey today?</div>
+            </div>
+        </div>
+        
+        <div class="chat-input-container">
+            <input type="text" id="chat-input" placeholder="Type your message..." />
+            <button id="send-message">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="features-grid">
+    <div class="feature-card highlight">
+        <span class="new-feature">New!</span>
+        <i class='bx bxs-time feature-icon'></i>
+        <h3 class="feature-title">Prayer Times</h3>
+        <p class="feature-description">
+            Get accurate prayer times based on your location. Includes Qibla direction, 
+            various calculation methods, and customizable notifications.
+        </p>
+        <div class="feature-stats">
+            <div class="stat-item">
+                <i class='bx bxs-user'></i>
+                <span>50K+ Users</span>
+            </div>
+            <div class="stat-item">
+                <i class='bx bxs-star'></i>
+                <span>4.9/5</span>
+            </div>
+        </div>
+        <a href="prayer.html" class="feature-link">
+            <i class='bx bx-right-arrow-alt'></i> View Prayer Times
+        </a>
+    </div>
+
+    <div class="feature-card">
+        <i class='bx bxs-donate-heart feature-icon'></i>
+        <h3 class="feature-title">Zakat Calculator</h3>
+        <p class="feature-description">
+            Calculate your Zakat easily with our comprehensive calculator. 
+            Includes different types of wealth and modern investment options.
+        </p>
+        <div class="feature-stats">
+            <div class="stat-item">
+                <i class='bx bxs-calculator'></i>
+                <span>100K+ Calculations</span>
+            </div>
+        </div>
+        <a href="zakat.html" class="feature-link">
+            <i class='bx bx-right-arrow-alt'></i> Calculate Zakat
+        </a>
+    </div>
+
+    <div class="feature-card">
+        <i class='bx bxs-quote-alt-left feature-icon'></i>
+        <h3 class="feature-title">Daily Quotes</h3>
+        <p class="feature-description">
+            Get inspired with daily Islamic quotes and reminders. 
+            Share beautiful quotes with friends and family.wsdwwwwwwwwddddddddd
+        </p>
+        <div class="feature-stats">
+            <div class="stat-item">
+                <i class='bx bxs-heart'></i>
+                <span>200K+ Shares</span>
+            </div>
+        </div>
+        <a href="quotes.html" class="feature-link">
+            <i class='bx bx-right-arrow-alt'></i> View Quotes
+        </a>
+    </div>
+
+    <div class="feature-card">
+        <i class='bx bxs-book-heart feature-icon'></i>
+        <h3 class="feature-title">Daily Duas</h3>
+        <p class="feature-description">
+            Learn and memorize essential daily duas with audio recitation 
+            and transliteration. Perfect for daily worship.
+        </p>
+        <div class="feature-stats">
+            <div class="stat-item">
+                <i class='bx bxs-download'></i>
+                <span>150K+ Downloads</span>
+            </div>
+        </div>
+        <a href="dua.html" class="feature-link">
+            <i class='bx bx-right-arrow-alt'></i> View Duas
+        </a>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer>
+	<div class="waves">
+		<div class="wave" id="wave1"></div>
+		<div class="wave" id="wave2"></div>
+		<div class="wave" id="wave3"></div>
+		<div class="wave" id="wave4"></div>
+	</div>
+	
+    <ul class="social-icon">
+		<li>
+			<a href="https://www.facebook.com/stussy/"><i class="fa-brands fa-facebook"></i></a>
+		</li>
+		<li>
+			<a href="https://www.instagram.com/stussy/"><i class="fa-brands fa-instagram"></i></a>
+		</li>
+		<li>
+			<a href="https://x.com/stussy"><i class="fa-brands fa-twitter"></i></a>
+		</li>
+		<li>
+			<a href="https://www.linkedin.com/company/stussy-inc."><i class="fa-brands fa-linkedin"></i></a>
+		</li>
+	</ul>
+	<ul class="menu">
+		<li><a href="HomePage.html">Home</a></li>
+		<li><a href="Shop.html">Features</a></li>
+		<li><a href="Contact.html">Ramadhan</a></li>
+		<li><a href="shop/index.php">Shop</a></li>
+        <li><a href="Profile.html">About Us</a></li>
+	</ul>
+	<p>&copy2024 iPray | All Rights Reserved</p>
+</footer>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Dropdown functionality
+        let dropdown = document.querySelector(".dropdown");
+        if (dropdown) {
+            let dropdownMenu = document.querySelector(".dropdown-menu");
+            
+            dropdown.addEventListener("mouseenter", function () {
+                dropdownMenu.style.display = "block";
+            });
+            
+            dropdown.addEventListener("mouseleave", function () {
+                dropdownMenu.style.display = "none";
+            });
+        }
+        
+        // Chatbot functionality
+        const chatbotToggle = document.getElementById('chatbot-toggle');
+        const chatbotBox = document.getElementById('chatbot-box');
+        const closeBtn = document.getElementById('close-chatbot');
+        const chatInput = document.getElementById('chat-input');
+        const sendBtn = document.getElementById('send-message');
+        const chatMessages = document.getElementById('chat-messages');
+
+        // Toggle chatbot visibility
+        chatbotToggle.addEventListener('click', function() {
+            chatbotBox.style.display = 'flex';
+        });
+
+        closeBtn.addEventListener('click', function() {
+            chatbotBox.style.display = 'none';
+        });
+
+        // Send message function
+        function sendMessage() {
+            const message = chatInput.value.trim();
+            if (message !== '') {
+                // Add user message
+                addMessage(message, 'user');
+                chatInput.value = '';
+                
+                // Simulate AI response (replace with actual API call)
+                setTimeout(function() {
+                    processUserMessage(message);
+                }, 1000);
+            }
+        }
+
+        // Add message to chat
+        function addMessage(message, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message');
+            messageDiv.classList.add(sender === 'user' ? 'user-message' : 'bot-message');
+            
+            const messageContent = document.createElement('div');
+            messageContent.classList.add('message-content');
+            messageContent.textContent = message;
+            
+            messageDiv.appendChild(messageContent);
+            chatMessages.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Process user message and generate response
+        function processUserMessage(message) {
+            let response;
+
+            // Simple rule-based responses (replace with AI API integration)
+            message = message.toLowerCase();
+            if (message.includes('salam') || message.includes('hello') || message.includes('hi')) {
+                response = "Wa alaikum salam! How can I assist you today?";
+            } else if (message.includes('prayer') || message.includes('salah') || message.includes('pray')) {
+                response = "Prayer is an essential part of Islamic faith. Would you like me to help you with prayer times, methods, or something else?";
+            } else if (message.includes('quran') || message.includes('read') || message.includes('recite')) {
+                response = "The Quran is the holy book of Islam. Would you like to access Quran readings or learn more about a specific surah?";
+            } else if (message.includes('ramadan') || message.includes('fasting') || message.includes('iftar')) {
+                response = "Ramadan is the holy month of fasting. How can I help you prepare for or observe Ramadan?";
+            } else if (message.includes('mosque') || message.includes('masjid')) {
+                response = "Would you like me to help you find nearby mosques or provide information about mosque etiquette?";
+            } else if (message.includes('dua') || message.includes('supplication')) {
+                response = "Duas are beautiful supplications to Allah. Would you like me to share some commonly recited duas?";
+            } else if (message.includes('thank') || message.includes('thanks') || message.includes('jazak')) {
+                response = "You're welcome! Is there anything else I can help you with?";
+            } else {
+                response = "I'm still learning about Islamic practices. Could you please elaborate on your question so I can assist you better?";
+            }
+
+            addMessage(response, 'bot');
+        }
+
+        // Event listeners
+        sendBtn.addEventListener('click', sendMessage);
+        
+        chatInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    });
+</script>
+</body>
+</html>
